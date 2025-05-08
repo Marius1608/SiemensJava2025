@@ -38,7 +38,7 @@ public class ItemController {
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
 
-        // Additional email validation if needed
+        // Additional email validation
         if (item.getEmail() != null && !EmailValidator.isValid(item.getEmail())) {
             return new ResponseEntity<>("Invalid email format", HttpStatus.BAD_REQUEST);
         }
@@ -64,7 +64,7 @@ public class ItemController {
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
 
-        // Additional email validation if needed
+        // Additional email validation
         if (item.getEmail() != null && !EmailValidator.isValid(item.getEmail())) {
             return new ResponseEntity<>("Invalid email format", HttpStatus.BAD_REQUEST);
         }

@@ -88,13 +88,12 @@ public class ItemService {
                     Thread.currentThread().interrupt();
                     return Optional.<Item>empty();
                 } catch (Exception e) {
-                    // Log error but don't throw - allows other items to continue processing
                     System.err.println("Error processing item with ID " + id + ": " + e.getMessage());
                     return Optional.<Item>empty();
                 }
             }, taskExecutor).thenAccept(optItem -> {
-                // No additional action needed - we've already added the item to processedItems
-                // in the supplyAsync block if processing was successful
+                // No additional action needed
+                // We've already added the item to processedItems in the supplyAsync block if processing was successful
             }).exceptionally(ex -> {
                 // Handle any unexpected errors from the futures
                 System.err.println("Unexpected error in future for item ID " + id + ": " + ex.getMessage());

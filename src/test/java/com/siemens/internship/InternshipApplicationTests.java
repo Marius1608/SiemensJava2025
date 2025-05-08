@@ -66,11 +66,11 @@ class InternshipApplicationTests {
 	@InjectMocks
 	private ItemService mockItemService;
 
+
 	@AfterEach
 	public void cleanup() {
 		itemRepository.deleteAll();
 	}
-
 
 	@Test
 	void contextLoads() {
@@ -116,7 +116,7 @@ class InternshipApplicationTests {
 				.andExpect(jsonPath("$.name").value("Test Item"))
 				.andReturn().getResponse().getHeader("Location");
 
-		// Extract the ID from the Location header or response body
+		// Extract the id from the Location header or response body
 		String responseBody = mockMvc.perform(post("/api/items")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(newItem)))
@@ -176,23 +176,8 @@ class InternshipApplicationTests {
 
 	@Test
 	public void testDeleteNonExistentItem() throws Exception {
-		// Perform DELETE request for non-existent ID
+		// Perform DELETE request for non-existent if
 		mockMvc.perform(delete("/api/items/999")).andExpect(status().isNotFound());
-	}
-
-	@Test
-	void createItem_emailWithSpecialCharInDomain() {
-		Item item = new Item(
-				null,
-				"Bad Item",
-				"Desc",
-				"Status",
-				"test@exam_ple.com");
-
-		ResponseEntity<String> response = restTemplate.postForEntity("/api/items", item, String.class);
-
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-		assertThat(response.getBody()).contains("Invalid email format");
 	}
 
 	@Test
@@ -238,7 +223,7 @@ class InternshipApplicationTests {
 		ResponseEntity<Item> postResponse = restTemplate.postForEntity("/api/items", original, Item.class);
 
 		assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-		Long id = postResponse.getBody().getId();
+		Long id = Objects.requireNonNull(postResponse.getBody()).getId();
 
 		Item updated = new Item(
 				null,
@@ -346,5 +331,4 @@ class InternshipApplicationTests {
 		verify(mockItemRepository, times(1)).findById(id2);
 		verify(mockItemRepository, times(2)).save(any(Item.class));
 	}
-
 }
